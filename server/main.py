@@ -1,10 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from routes.authentication import app as authRouter
 from routes.user import app as userRouter
 from services.authentication import validate_token
 
 
-async def custom_middleware(request, call_next):
+async def custom_middleware(request: Request, call_next):
     """
     This is a middleware function for the app, this will be triggered first before the request is
     passed to any of the routes.
@@ -31,7 +31,7 @@ async def custom_middleware(request, call_next):
 
 #create fastapi app
 app = FastAPI()
-app.middleware("http")(custom_middleware)
+app.middleware("authentication")(custom_middleware)
 
 #include additional routers
 app.include_router(authRouter)
