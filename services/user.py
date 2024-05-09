@@ -4,6 +4,7 @@ from models.models import UserFilter, User
 from models.api import CreateUserRequest, UpdateUserRequest
 from fastapi import HTTPException
 from database.failure_rollback import create_backup, rollback_on_failure
+from services.file import dump_data_to_file
 
 def get_users(filter: UserFilter = None) -> List[User]:
     with open("database/static_users.json", "r") as f:
@@ -17,59 +18,51 @@ def get_users(filter: UserFilter = None) -> List[User]:
 
 def create_user(user: User):
     if not user.userId:
-        user.userId = uuid.uuid4()
-    user.userId = str(user.userId)
-    
-    with open('database/static_users.json', 'r') as f:
-        users = json.load(f)
-    users["USERS"].append(user.dict())
+        user.userId = str(uuid.uuid4())
+
+    users = get_users()
+
+    users.append(user)
 
     create_backup()
 
-    with open('database/static_users.json', '+a') as f:
-        json.dump(users,f,indent=4)
+    dump_data_to_file(users)
 
 
 def update_user(userId: str, updateUserRequest: UpdateUserRequest):
     
-    user_exists = get_users(filter=UserFilter(userId=userId))
-    #if not user_exists:
-    #    raise HTTPException(404, "User doesn't exist.")
-    user_to_update = user_exists[0].dict()
+    user_to_update = get_users(filter=UserFilter(userId=userId))[0]
+
     update = updateUserRequest.update
     for key, value in update.items():
-        if key in user_to_update.keys():
-            user_to_update[key] = value
+        if key in user_to_update.dict().keys():
+            setattr(user_to_update, key, value)
+            #user_to_update[key] = value
     
     users = get_users()
     
-    for idx, user in enumerate(users["USERS"]):
-        if user['userId'] == str(userId):
-            users["USERS"][idx] = user_to_update
+    for idx, user in enumerate(users):
+        if user.userId == userId:
+            users[idx] = user_to_update
             break
     
     create_backup()
 
-    with open('database/static_users.json', 'w') as f:
-        json.dump(users,f,indent=4)
+    dump_data_to_file(users)
     
     return True
 
 def delete_user(userId: str):
-    users = get_users()
-
     does_user_exist = get_users(filter=UserFilter(userId=userId))
     if not does_user_exist:
         raise HTTPException(404, "User not found.")
+    
+    users = get_users()
     updated_users = [user for user in users if user.userId != userId]
 
     create_backup()
 
-    with open("database/static_users.json", "r") as f:
-        users = json.load(f)
-    users["USERS"] = [user.dict() for user in updated_users]
-    with open("database/static_users.json", "w") as f:
-        users = json.dump(users, f, indent=4)
+    dump_data_to_file(updated_users)
     
     return True
     
