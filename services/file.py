@@ -16,4 +16,4 @@ def dump_data_to_file(usersList: List[User]):
     except:
         print('rollback triggered!')
         rollback_on_failure()
-        raise HTTPException(500,"Database failed. Changes not reflected")
+        raise HTTPException(500,"Database update failed. Changes not reflected")
