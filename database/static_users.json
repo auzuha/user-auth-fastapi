@@ -31,15 +31,6 @@
             "metadata": {
                 "stand": "Crazy Diamond"
             }
-        },
-        {
-            "userId": "5",
-            "username": "uchiha.sasuke",
-            "firstName": "Sasuke",
-            "lastName": "Uchiha",
-            "metadata": {
-                "clan": "Uchiha"
-            }
         }
     ]
 }

@@ -19,7 +19,7 @@ class GetUsersResponse(BaseModel):
 
 
 class CreateUserRequest(BaseModel):
-    userId: Optional[str] = uuid.uuid4()
+    userId: Optional[str] = str(uuid.uuid4())
     username: str
     firstName: str
     lastName: str
