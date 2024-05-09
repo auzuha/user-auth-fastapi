@@ -3,7 +3,6 @@ from typing import List, Dict
 from models.models import UserFilter, User
 from models.api import CreateUserRequest, UpdateUserRequest
 from fastapi import HTTPException
-from database.failure_rollback import create_backup, rollback_on_failure
 from services.file import dump_data_to_file
 
 def get_users(filter: UserFilter = None) -> List[User]:
@@ -24,20 +23,21 @@ def create_user(user: User):
 
     users.append(user)
 
-    create_backup()
-
     dump_data_to_file(users)
 
 
 def update_user(userId: str, updateUserRequest: UpdateUserRequest):
-    
     user_to_update = get_users(filter=UserFilter(userId=userId))[0]
 
     update = updateUserRequest.update
     for key, value in update.items():
         if key in user_to_update.dict().keys():
+            # if key == 'metadata' and value is not None and user_to_update.metadata is not None:
+            #     print(value)
+            #     user_to_update.metadata.update(value)
+            #     print(value)
             setattr(user_to_update, key, value)
-            #user_to_update[key] = value
+
     
     users = get_users()
     
@@ -45,8 +45,6 @@ def update_user(userId: str, updateUserRequest: UpdateUserRequest):
         if user.userId == userId:
             users[idx] = user_to_update
             break
-    
-    create_backup()
 
     dump_data_to_file(users)
     
@@ -60,7 +58,6 @@ def delete_user(userId: str):
     users = get_users()
     updated_users = [user for user in users if user.userId != userId]
 
-    create_backup()
 
     dump_data_to_file(updated_users)
     
