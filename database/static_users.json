@@ -1,47 +1,45 @@
 {
-    "USERS" : [
-    {
-        "userId" : "1",
-        "username" : "john.doe",
-        "firstName" : "John",
-        "lastName" : "Doe",
-        "metadata" : {}
-    },
-    {
-        "userId" : "2",
-        "username" : "Jane Doe",
-        "firstName" : "Jane",
-        "lastName" : "Doe",
-        "metadata" : {}
-    },
-    {
-        "userId" : "3",
-        "username" : "kujo.jotaro",
-        "firstName" : "Jotaro",
-        "lastName" : "Kujo",
-        "metadata" : {
-            "stand" : "Star Platinum"
+    "USERS": [
+        {
+            "userId": "1",
+            "username": "john.doe",
+            "firstName": "John",
+            "lastName": "Doe",
+            "metadata": {}
+        },
+        {
+            "userId": "2",
+            "username": "Jane Doe",
+            "firstName": "Jane",
+            "lastName": "Doe",
+            "metadata": {}
+        },
+        {
+            "userId": "3",
+            "username": "kujo.jotaro",
+            "firstName": "Jotaro",
+            "lastName": "Kujo",
+            "metadata": {
+                "stand": "Star Platinum"
+            }
+        },
+        {
+            "userId": "4",
+            "username": "higashikata.josuke",
+            "firstName": "Josuke",
+            "lastName": "Higashikata",
+            "metadata": {
+                "stand": "Crazy Diamond"
+            }
+        },
+        {
+            "userId": "5",
+            "username": "aug.stp",
+            "firstName": "Sasuke",
+            "lastName": "Uchiha",
+            "metadata": {
+                "clan": "Uchiha"
+            }
         }
-    },
-    {
-        "userId" : "4",
-        "username" : "higashikata.josuke",
-        "firstName" : "Josuke",
-        "lastName" : "Higashikata",
-        "metadata" : {
-            "stand" : "Crazy Diamond"
-        }
-    },
-    {
-        "userId" : "5",
-        "username" : "uchiha.sasuke",
-        "firstName" : "Sasuke",
-        "lastName" : "Uchiha",
-        "metadata" : {
-            "clan" : "Uchiha"
-        }
-    }
-    
-
-]
+    ]
 }
